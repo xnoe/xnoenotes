@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html style="padding:0;margin:0;width:100%;height:100%">
+  <head>
+    <title>Elsie Notes</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+
+    <style>
+      * {box-sizing: border-box;}
+
+      *:focus{outline:none;}
+
+      body *,body {
+        font-family: sans-serif;
+        display: flex;
+        flex-direction: column;
+      }
+
+      body {
+        height: 100% !important;
+      }
+
+      #notes {
+        flex-direction: column;
+      }
+
+      body {flex-direction: row;}
+
+      nav {width: 20%;background: #202020;height:100%;padding: 30px 20px; justify-content:space-between;}
+      nav > section > h2 {font-weight: bold; color: #a6f;}
+      a {color: #fff; font-weight: bold;}
+
+      h2 {margin:0;}
+
+      #notes > span {
+        width: 100%;
+        display: flex;
+        height: 50px;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      #notes > span:hover {
+        background-color: #303030;
+      }
+
+      #text {
+        background: #fff;
+        color: #202020;
+        width: 80%;
+        padding: 0 20px;
+      }
+
+      textarea {width:100%;height:100%;padding:0:margin:0;border:none;font-family:sans-serif;font-size:14px;display:inline;resize:none;}
+    </style>
+  </head>
+
+  <body style="padding:0;margin:0;width:100%;height:100%;">
+    <nav>
+      <section>
+        <h2>Elsie Notes</h2>
+        <div id="notes">
+        </div>
+      </section>
+      <div>
+        <a href="https://xnopyt.com">XNOPYT</a>
+        <a href="https://bybbworld.com">Bybbworld</a>
+      </div>
+    </nav>
+
+    <section id="text">
+      <h1 id="title"></h1>
+      <textarea oninput="save()" contenteditable="true" id="content"></textarea>
+    </section>
+  </body>
+
+  <script style="display:none;">
+    current = "Welcome to Elsie Notes!";
+
+    genList = () => {
+      document.getElementById("notes").innerHTML = "";
+      Object.keys(localStorage).forEach(x=>{
+        document.getElementById("notes").innerHTML += '<span><a onclick="loadDoc(\''+x+'\')" href="#">'+x+'</a>'+(x!="Welcome to Elsie Notes!"?'<span><a onclick="rename()" href="#">Rename</a> <a onclick="remove(\''+x+'\')" href="#">X</a></span></span>':'');
+      });
+      document.getElementById("notes").innerHTML += '<span><a onclick="newFile()" href="#">New File</a></span>'
+    }
+
+    getCur = () => {
+      return current;
+    }
+
+    saveDoc = (docFile, content) => {
+      localStorage.setItem(docFile, content);
+    }
+
+    loadDoc = docFile => {
+      current = docFile;
+      doc = localStorage.getItem(docFile);
+      doc==null? saveDoc(docFile, "") : 0;
+      doc = localStorage.getItem(docFile);
+      document.getElementById("title").innerHTML = docFile;
+      document.getElementById("content").value = doc;
+    }
+
+    save = () => saveDoc(getCur(), document.getElementById("content").value);
+
+    remove = item => {localStorage.removeItem(item);getCur()==item?loadDoc("Welcome to Elsie Notes!"):0;genList()}
+
+    async function rename() {
+      const { value: newfilename } = await Swal.fire({
+        heightAuto: false,
+        title: `What do you want to rename ${getCur()} to?`,
+        input: 'text',
+        showCancelButton: true,
+        inputValidator: (value) => {
+          if (!value) {
+            return 'Please enter a filename.'
+          }
+        }
+      });
+      if (newfilename) {
+        old = getCur();
+        saveDoc(newfilename, localStorage.getItem(old));
+        current = newfilename; 
+        remove(old);
+        loadDoc(current);
+      }
+    }
+
+    async function newFile() {
+      const { value: filename } = await Swal.fire({
+        heightAuto: false,
+        title: `What do you want to name your new file?`,
+        input: 'text',
+        showCancelButton: true,
+        inputValidator: (value) => {
+          if (!value) {
+            return 'Please enter a filename.'
+          }
+        }
+      });
+      filename? saveDoc(filename, ""): false;
+      genList();
+    }
+
+    document.body.onload = () => {
+      saveDoc("Welcome to Elsie Notes!", "Welcome to Elsie Notes!\nClick here to start writing!");
+      loadDoc(getCur());
+
+      genList();
+    };
+  </script>
+</html>
