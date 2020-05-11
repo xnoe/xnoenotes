@@ -161,7 +161,6 @@
     reader = new FileReader();
 
     loadFile = x => {
-      console.log("Happened");
       reader.readAsBinaryString(x.target.files[0]);
       setTimeout(()=>{saveDoc(x.target.files[0].name, reader.result);
       genList();},100);
