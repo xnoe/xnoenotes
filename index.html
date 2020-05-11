@@ -52,6 +52,8 @@
         padding: 0 20px;
       }
 
+      #text > a {color: #202020;}
+
       textarea {width:100%;height:100%;padding:0:margin:0;border:none;font-family:sans-serif;font-size:14px;display:inline;resize:none;}
     </style>
   </head>
@@ -71,8 +73,11 @@
 
     <section id="text">
       <h1 id="title"></h1>
+      <a href="#" onclick="savelocal()">Download this file.</a>
       <textarea oninput="save()" contenteditable="true" id="content"></textarea>
     </section>
+
+    <a id="saver" style="display: none !important;"></a>
   </body>
 
   <script style="display:none;">
@@ -101,6 +106,13 @@
       doc = localStorage.getItem(docFile);
       document.getElementById("title").innerHTML = docFile;
       document.getElementById("content").value = doc;
+    }
+
+    savelocal = () => {
+      saver = document.getElementById("saver");
+      saver.href = 'data:application/octet-stream;charset=utf-8,' + encodeURIComponent(localStorage.getItem(getCur()));
+      saver.download = getCur() + '.txt';
+      saver.click();
     }
 
     save = () => saveDoc(getCur(), document.getElementById("content").value);
