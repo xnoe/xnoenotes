@@ -16,10 +16,6 @@
         flex-direction: column;
       }
 
-      body {
-        height: 100% !important;
-      }
-
       #notes {
         flex-direction: column;
       }
@@ -64,8 +60,7 @@
     <nav>
       <section>
         <h2>Elsie Notes</h2>
-        <div id="notes">
-        </div>
+        <div id="notes"></div>
         <span><input type="file" id="file" /></span>
       </section>
       <div>
@@ -98,15 +93,16 @@
 
     saveDoc = (docFile, content) => {
       localStorage.setItem(docFile, content);
+      genList();
     }
 
     loadDoc = docFile => {
       current = docFile;
-      doc = localStorage.getItem(docFile);
-      doc==null? saveDoc(docFile, "") : 0;
+      localStorage.getItem(docFile)==null? saveDoc(docFile, "") : 0;
       doc = localStorage.getItem(docFile);
       document.getElementById("title").innerHTML = docFile;
       document.getElementById("content").value = doc;
+      genList();
     }
 
     savelocal = () => {
@@ -118,19 +114,14 @@
 
     save = () => saveDoc(getCur(), document.getElementById("content").value);
 
-    remove = item => {localStorage.removeItem(item);getCur()==item?loadDoc("Welcome to Elsie Notes!"):0;genList()}
+    remove = item => {localStorage.removeItem(item);getCur()==item?loadDoc("Welcome to Elsie Notes!"):loadDoc(getCur())}
 
     async function rename(old) {
       const { value: newfilename } = await Swal.fire({
         heightAuto: false,
         title: `What do you want to rename ${old} to?`,
         input: 'text',
-        showCancelButton: true,
-        inputValidator: (value) => {
-          if (!value) {
-            return 'Please enter a filename.'
-          }
-        }
+        showCancelButton: true
       });
       if (newfilename) {
         saveDoc(newfilename, localStorage.getItem(old));
@@ -145,30 +136,21 @@
         heightAuto: false,
         title: `What do you want to name your new file?`,
         input: 'text',
-        showCancelButton: true,
-        inputValidator: (value) => {
-          if (!value) {
-            return 'Please enter a filename.'
-          }
-        }
+        showCancelButton: true
       });
       filename? saveDoc(filename, ""): false;
-      genList();
     }
 
     reader = new FileReader();
 
     loadFile = x => {
       reader.readAsBinaryString(x.target.files[0]);
-      setTimeout(()=>{saveDoc(x.target.files[0].name, reader.result);
-      genList();},100);
+      setTimeout(()=>{saveDoc(x.target.files[0].name, reader.result);},100);
     }
 
     document.body.onload = () => {
       saveDoc("Welcome to Elsie Notes!", "Welcome to Elsie Notes!\nClick here to start writing!");
       loadDoc(getCur());
-
-      genList();
 
       document.getElementById("file").addEventListener('change', loadFile, false);
     };
