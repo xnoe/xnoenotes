@@ -98,7 +98,6 @@
 
     loadDoc = docFile => {
       current = docFile;
-      localStorage.getItem(docFile)==null? saveDoc(docFile, "") : 0;
       doc = localStorage.getItem(docFile);
       document.getElementById("title").innerHTML = docFile;
       document.getElementById("content").value = doc;
