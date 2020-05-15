@@ -94,7 +94,7 @@
       document.getElementById("notes").innerHTML += '<span><a onclick="newFile()" href="#">New File</a></span>'
     }
 
-    getCur = () => return current;
+    getCur = () => {return current};
 
     saveDoc = (docFile, content) => {
       localStorage.setItem(docFile, content);
