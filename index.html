@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html style="padding:0;margin:0;width:100%;height:100%">
   <head>
-    <title>Elsie Notes</title>
+    <title>Xnoe Notes</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 
@@ -59,7 +59,7 @@
   <body style="padding:0;margin:0;width:100%;height:100%;">
     <nav>
       <section>
-        <h2>Elsie Notes</h2>
+        <h2>Xnoe Notes</h2>
         <div id="notes"></div>
         <span><input type="file" id="file" /></span>
       </section>
@@ -79,12 +79,12 @@
   </body>
 
   <script style="display:none;">
-    current = "Welcome to Elsie Notes!";
+    current = "Welcome to Xnoe Notes!";
 
     genList = () => {
       document.getElementById("notes").innerHTML = "";
       Object.keys(localStorage).forEach(x=>{
-        document.getElementById("notes").innerHTML += '<span><a style="overflow:hidden;" onclick="loadDoc(\''+x+'\')" href="#">'+x+'</a>'+(x!="Welcome to Elsie Notes!"?'<span><a onclick="rename(\''+x+'\')" href="#">Rename</a> <a onclick="remove(\''+x+'\')" href="#">X</a></span></span>':'');
+        document.getElementById("notes").innerHTML += '<span><a style="overflow:hidden;" onclick="loadDoc(\''+x+'\')" href="#">'+x+'</a>'+(x!="Welcome to Xnoe Notes!"?'<span><a onclick="rename(\''+x+'\')" href="#">Rename</a> <a onclick="remove(\''+x+'\')" href="#">X</a></span></span>':'');
       });
       document.getElementById("notes").innerHTML += '<span><a onclick="newFile()" href="#">New File</a></span>'
     }
@@ -113,7 +113,7 @@
 
     save = () => saveDoc(getCur(), document.getElementById("content").value);
 
-    remove = item => {localStorage.removeItem(item);getCur()==item?loadDoc("Welcome to Elsie Notes!"):loadDoc(getCur())}
+    remove = item => {localStorage.removeItem(item);getCur()==item?loadDoc("Welcome to Xnoe Notes!"):loadDoc(getCur())}
 
     async function rename(old) {
       const { value: newfilename } = await Swal.fire({
@@ -148,7 +148,7 @@
     }
 
     document.body.onload = () => {
-      saveDoc("Welcome to Elsie Notes!", "Welcome to Elsie Notes!\nClick here to start writing!");
+      saveDoc("Welcome to Xnoe Notes!", "Welcome to Xnoe Notes!\nClick here to start writing!");
       loadDoc(getCur());
 
       document.getElementById("file").addEventListener('change', loadFile, false);
