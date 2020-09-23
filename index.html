@@ -148,7 +148,7 @@
     }
 
     document.body.onload = () => {
-      saveDoc("Welcome to Xnoe Notes!", "Welcome to Xnoe Notes!\nClick here to start writing!");
+      !localStorage.hasOwnProperty("Welcome to Xnoe Notes!")? saveDoc("Welcome to Xnoe Notes!", "Welcome to Xnoe Notes!\nClick here to start writing!"): false;
       loadDoc(getCur());
 
       document.getElementById("file").addEventListener('change', loadFile, false);
