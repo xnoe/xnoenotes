@@ -163,7 +163,8 @@
     }
 
     document.body.onload = () => {
-      saveDoc("Welcome to Xnoe Notes!", "Welcome to Xnoe Notes!\nClick here to start writing!");
+      if (!localStorage.hasOwnProperty("Welcome to Xnoe Notes!"))
+      	 saveDoc("Welcome to Xnoe Notes!", "Welcome to Xnoe Notes!\nClick here to start writing!");
       loadDoc(current);
 
       document.getElementById("file").addEventListener('change', loadFile, false);
